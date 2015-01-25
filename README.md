@@ -37,6 +37,7 @@ Relationships from this particular configuration item to other configuration ite
 
 #### Javascript syntax
 
+```
 {
     id: 'importantMachine',
     type: 'machine',
@@ -50,6 +51,7 @@ Relationships from this particular configuration item to other configuration ite
         router: 'routerMachine'
     }
 }
+```
 
 ### Repository
 
@@ -57,10 +59,12 @@ Represents a cmdb repository
 
 #### Javascript syntax
 
+```
 {
     id: 'domainX',
     revision: 234
 }
+```
 
 ### Change
 
@@ -68,6 +72,7 @@ Represents an atomic change to a CMDB repository, including modifications to one
 
 #### Javscript syntax
 
+```
 {
     revision: 235, // new revision for the repository incurred by this change
     updates: [ // a list of configuration items that have been modified (added, modified or deleted)
@@ -115,6 +120,7 @@ Represents an atomic change to a CMDB repository, including modifications to one
         }
     ]
 }
+```
 
 ## cmdb-repository interface
 
