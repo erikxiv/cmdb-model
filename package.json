@@ -1,0 +1,43 @@
+{
+  "name": "cmdb-model",
+  "version": "1.0.0",
+  "description": "A module to retrieve Configuration Item information from multiple repositories and consolidate it into one or more repositories following a common model format.",
+  "main": "lib/cmdb-model.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-mocha": "^2.0.0",
+    "should": "^4.6.1"
+  },
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/erikxiv/cmdb-model.git"
+  },
+  "keywords": [
+    "cmdb",
+    "model",
+    "core",
+    "rdf",
+    "json",
+    "node"
+  ],
+  "author": "Erik Larsson",
+  "contributors": [
+    {
+      "name": "Erik Larsson",
+      "email": "erik.larsson@musiker.nu"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erikxiv/cmdb-model/issues"
+  },
+  "homepage": "https://github.com/erikxiv/cmdb-model"
+}
