@@ -1,6 +1,6 @@
 {
   "name": "cmdb-model",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A module to retrieve Configuration Item information from multiple repositories and consolidate it into one or more repositories following a common model format.",
   "main": "lib/cmdb-model.js",
   "directories": {

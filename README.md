@@ -6,8 +6,11 @@ Important Note: This module is not even remotely finished.
 
 * Existing CMDB implementations often try to do all, but fail on a few fronts
 * Existing CMDB implementations often focus on mostly networks and servers (and thus fail in other areas)
+
+## When?
 * For those who easily want to capture configuration item information from multiple sources easily
 * For those who flexibly want to restructure information from multiple sources to create actionable data for the CM team
+* For those whose datasets are relatively small (fits into memory)
 
 ## Installation & Setup
 

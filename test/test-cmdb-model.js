@@ -33,4 +33,32 @@ describe('cmdb-model', function() {
       cmdb.deleteRepository('test').should.be.fulfilled;
     });
   });
+
+  describe('.sourceChanged', function() {
+    it('should be possible to add a ci', function(done) {
+      cmdb.sourceChanged('test', {
+        updates: [
+          {
+            id: 'newMachine',
+            updateType: 'added',
+            before: {},
+            after: {
+              id: 'newMachine',
+              type: 'machine',
+              properties: {
+                ip: '1.2.3.4'
+              },
+              relationships: {
+              }
+            }
+          }
+        ]
+      }).then(function(result) {
+        cmdb.getConfigurationItem('test', 'newMachine').should.have.deep.property('properties.ip', '1.2.3.4');
+        done();
+      }, function(error) {
+        done(Error(error));
+      });
+    });
+  });
 });
