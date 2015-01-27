@@ -27,7 +27,6 @@ Basic building block of any Configuration Management Database (CMDB). An item th
 #### Standard properties
 
 * id - unique, persistent identifier for this configuration item (unique within the specific repository). May not be changed once created.
-* type - Used to differentiate between different types of artefacts (e.g. machines, services, databases or whathaveyou). May not be changed once created.
 * revision - The current version of this specific configuration item. Any update will increment this value by one
 
 #### Custom properties
@@ -43,9 +42,9 @@ Relationships from this particular configuration item to other configuration ite
 ```
 {
     id: 'importantMachine',
-    type: 'machine',
     revision: 3,
     properties: {
+        type: 'machine',
         ip: '192.168.0.3',
         name: 'importantMachine'
     },
@@ -81,7 +80,7 @@ Represents an atomic change to a CMDB repository, including modifications to one
     updates: [ // a list of configuration items that have been modified (added, modified or deleted)
         {
             id: 'newMachine',
-            updateType: 'added',
+            operation: 'create',
             before: {},
             after: {
                 id: 'newMachine',
@@ -92,7 +91,7 @@ Represents an atomic change to a CMDB repository, including modifications to one
         },
         {
             id: 'newMachine',
-            updateType: 'modified',
+            operation: 'update',
             before: {
                 id: 'newMachine',
                 type: 'machine',
@@ -112,7 +111,7 @@ Represents an atomic change to a CMDB repository, including modifications to one
         },
         {
             id: 'newMachine',
-            updateType: 'deleted',
+            operation: 'delete',
             before: {
                 id: 'newMachine',
                 type: 'machine',
@@ -125,29 +124,35 @@ Represents an atomic change to a CMDB repository, including modifications to one
 }
 ```
 
-## cmdb-repository interface
-
-### Repositories
+## cmdb interface
 
 * createRepository(name) - create a new repository
+* getRepository(name) - get an existing repository
 * deleteRepository(name) - delete an existing repository
+* deleteAllRepositories() - delete all repositories
+* searchRepositories([options]) - search for repositories
 
-### Browse repository
+## repository interface
 
-* getConfigurationItems(repo[, type, options]) - list all configuration items in repository
-* getConfigurationItem(repo, ci) - retrieve a configuration item
-* getChanges([lastRevision, options]) - retrieve the last changes to the repository (see #changeInformation for format)
+### Configuration Items
 
-### Update repository
-Should be called by adapters to repository sources. Can follow two paradigms - either a source that is capable of detecting changes where the cmdb-model is invoked with incremental updates (incremental paradigm) or a source where a full extraction is made and compared to previous state to determine changes made (comparison paradigm).
+* createCI(ci[, options])
+* getCI(id[, options])
+* updateCI(ci[, options])
+* deleteCI(id[, options])
+* searchCI([options])
 
-#### incremental paradigm
+### Changes
 
-* sourceChanged(info) - change repository information (see #changeInformation for format)
+* createChange(change[, options])
+* getChange(change[, options])
+* searchChange([options])
 
-#### comparison paradigm
+### Compare
+Returns a change with differences. Useful when (1) updating the repository from a source where the full data is extracted periodically and (2) to compare as-is, to-be scenarios. Requires ci ids to be the same (use ci id to diff individual cis). 
 
-* sourceData(data) - change repository information (see #replaceInformation for format)
+* compare(otherRepositoryName)
+* compare(Array of cis)
 
 # Unsorted
 
