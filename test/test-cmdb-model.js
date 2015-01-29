@@ -69,45 +69,45 @@ describe('cmdb-model', function() {
     });
 
     describe('.createCI', function() {
-      it.only('should create a CI', function() {
-        repo.createCI({ id: '1', key1: 'value1', key2: 'value2'});
-        repo.createCI({ id: '2', key1: 'value1', key2: 'valueB'});
-        repo.createCI({ id: '3', key1: 'value1', key2: 'valueQ'}).should.be.fulfilled;
-        repo.getCI('3').key2.should.equal('valueQ');
+      it('should create a CI', function() {
+        repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
+        repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
+        repo.createCI({ id: '3', properties: {key1: 'value1', key2: 'valueQ'}}).should.be.fulfilled;
+        repo.getCI('3').properties.key2.should.equal('valueQ');
       });
     });
 
     describe('.getCI', function() {
       it('should retrieve a CI', function() {
-        repo.createCI({ id: '1', key1: 'value1', key2: 'value2'});
-        repo.createCI({ id: '2', key1: 'value1', key2: 'valueB'});
-        repo.getCI('1').key2.should.equal('value2');
+        repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
+        repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
+        repo.getCI('1').properties.key2.should.equal('value2');
       });
     });
 
     describe('.updateCI', function() {
       it('should update a CI', function() {
-        repo.createCI({ id: '1', key1: 'value1', key2: 'value2'});
-        repo.createCI({ id: '2', key1: 'value1', key2: 'valueB'});
-        repo.updateCI({ id: '1', key2: 'other' }).should.be.fulfilled;
-        repo.getCI('1').key2.should.equal('other');
-        repo.getCI('1').key1.should.equal('value1');
+        repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
+        repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
+        repo.updateCI({ id: '1', properties: {key2: 'other' }}).should.be.fulfilled;
+        repo.getCI('1').properties.key2.should.equal('other');
+        repo.getCI('1').properties.key1.should.equal('value1');
       });
     });
 
     describe('.deleteCI', function() {
       it('should delete a CI', function() {
-        repo.createCI({ id: '1', key1: 'value1', key2: 'value2'});
-        repo.createCI({ id: '2', key1: 'value1', key2: 'valueB'});
+        repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
+        repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
         repo.deleteCI('1').should.be.fulfilled;
-        should.not.be.ok(repo.getCI('1'));
+        should.not.exist(repo.getCI('1'));
       });
     });
 
     describe('.searchCI', function() {
       it('should list all CIs', function() {
-        repo.createCI({ id: '1', key1: 'value1', key2: 'value2'});
-        repo.createCI({ id: '2', key1: 'value1', key2: 'valueB'});
+        repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
+        repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
         repo.searchCI().should.have.length(2);
       });
     });
