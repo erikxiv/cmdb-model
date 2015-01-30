@@ -14,7 +14,8 @@
     "gulp": "^3.8.10",
     "gulp-mocha": "^2.0.0",
     "chai": "^1.10.0",
-    "chai-as-promised": "^4.1.1"
+    "chai-as-promised": "^4.1.1",
+    "tmp": "^0.0.24"
   },
   "scripts": {
     "test": "gulp test"
