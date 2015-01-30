@@ -61,6 +61,12 @@ describe('cmdb-model', function() {
     beforeEach(function(done) {
       cmdb.createRepository('test').then(function(r) {
         repo = r;
+        return repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
+      })
+      .then(function(ci) {
+        return repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
+      })
+      .then(function(ci) {
         done();
       });
     });
@@ -70,8 +76,6 @@ describe('cmdb-model', function() {
 
     describe('.createCI', function() {
       it('should create a CI', function() {
-        repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
-        repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
         repo.createCI({ id: '3', properties: {key1: 'value1', key2: 'valueQ'}}).should.be.fulfilled;
         repo.getCI('3').properties.key2.should.equal('valueQ');
       });
@@ -79,16 +83,12 @@ describe('cmdb-model', function() {
 
     describe('.getCI', function() {
       it('should retrieve a CI', function() {
-        repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
-        repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
         repo.getCI('1').properties.key2.should.equal('value2');
       });
     });
 
     describe('.updateCI', function() {
       it('should update a CI', function() {
-        repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
-        repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
         repo.updateCI({ id: '1', properties: {key2: 'other' }}).should.be.fulfilled;
         repo.getCI('1').properties.key2.should.equal('other');
         repo.getCI('1').properties.key1.should.equal('value1');
@@ -97,8 +97,6 @@ describe('cmdb-model', function() {
 
     describe('.deleteCI', function() {
       it('should delete a CI', function() {
-        repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
-        repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
         repo.deleteCI('1').should.be.fulfilled;
         should.not.exist(repo.getCI('1'));
       });
@@ -106,9 +104,46 @@ describe('cmdb-model', function() {
 
     describe('.searchCI', function() {
       it('should list all CIs', function() {
+        repo.searchCI().should.have.length(2);
+      });
+    });
+  });
+
+  ////
+  // Change
+  ////
+  describe('change', function() {
+    var repo = null;
+
+    beforeEach(function(done) {
+      cmdb.createRepository('test').then(function(r) {
+        repo = r;
         repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
         repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
-        repo.searchCI().should.have.length(2);
+        done();
+      });
+    });
+    afterEach(function() {
+      cmdb.deleteAllRepositories();
+    });
+
+    describe('.createChange', function() {
+      it('should create a change', function(done) {
+        repo.createChange({updates:[{id:'1',operation:'update',after:{properties:{key2:'other'}}}]})
+        .then(function(change) {
+          repo.searchChanges().should.have.length(3);
+          repo.getCI('1').properties.key2.should.equal('other');
+          repo.getCI('1').properties.key1.should.equal('value1');
+          done();
+        }, function(err) {
+          done(Error(err));
+        });
+      });
+    });
+
+    describe('.searchChanges', function() {
+      it('should list all changes', function() {
+        repo.searchChanges().should.have.length(2);
       });
     });
   });
