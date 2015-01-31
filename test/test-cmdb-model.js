@@ -75,7 +75,7 @@ describe('cmdb-model', function() {
     });
 
     describe('.createCI', function() {
-      it('should create a CI', function() {
+      it.only('should create a CI', function() {
         repo.createCI({ id: '3', properties: {key1: 'value1', key2: 'valueQ'}}).should.be.fulfilled;
         repo.getCI('3').properties.key2.should.equal('valueQ');
       });
