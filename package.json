@@ -8,14 +8,15 @@
   },
   "dependencies": {
     "rdfstore": "^0.8.2",
-    "promise": "^6.1.0"
+    "promise": "^6.1.0",
+    "chokidar": "^1.0.0"
   },
   "devDependencies": {
     "gulp": "^3.8.10",
     "gulp-mocha": "^2.0.0",
     "chai": "^1.10.0",
     "chai-as-promised": "^4.1.1",
-    "tmp": "^0.0.24"
+    "rewire": "^2.1.4"
   },
   "scripts": {
     "test": "gulp test"
