@@ -30,10 +30,12 @@ describe('cmdb-model', function() {
       });
     });
 
-    describe('.deleteRepository', function() {
+    describe('.deleteRepository', function(done) {
       it('should delete a repository', function() {
-        cmdb.deleteRepository('test').should.be.fulfilled;
-        should.not.exist(cmdb.getRepository('test'));
+        cmdb.deleteRepository('test').then(function() {
+          should.not.exist(cmdb.getRepository('test'));
+          done();
+        });
       });
     });
 
