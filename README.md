@@ -55,6 +55,20 @@ Relationships from this particular configuration item to other configuration ite
 }
 ```
 
+#### RDF/Turle representation
+
+```
+repo:importantMachine
+    rdf:type cmdb:ci;
+    cmdb:id 'importantMachine';
+    cmdb:revision 3;
+    repo:type 'machine';
+    repo:ip '192.168.0.3';
+    repo:name 'importantMachine';
+    repo:dns repo:dnsMachine;
+    repo:router repo:routerMachine .
+```
+
 ### Repository
 
 Represents a cmdb repository
@@ -122,6 +136,46 @@ Represents an atomic change to a CMDB repository, including modifications to one
         }
     ]
 }
+```
+
+#### RDF/Turtle syntax
+
+```
+repoc:235
+    rdf:type cmdb:change;
+    cmdb:revision 235;
+    cmdb:update _:1;
+    cmdb:update _:2;
+    cmdb:update _:3 .
+_:1
+    cmdb:id 'newMachine';
+    cmdb:operation 'create';
+    cmdb:before _:b1;
+    cmdb:after _:a1 .
+_:2
+    cmdb:id 'newMachine';
+    cmdb:operation 'update';
+    cmdb:before _:b2;
+    cmdb:after _:a2 .
+_:3
+    cmdb:id 'newMachine';
+    cmdb:operation 'delete';
+    cmdb:before _:b3;
+    cmdb:after _:a3 .
+_:a1
+    cmdb:id 'importantMachine';
+    repo:type 'machine' .
+_:b2
+    cmdb:id 'importantMachine';
+    repo:type 'machine';
+    repo:ip '10.1.2.3' .
+_:a2
+    cmdb:id 'importantMachine';
+    repo:type 'machine';
+    repo:ip '10.1.2.4' .
+_:b3
+    cmdb:id 'importantMachine';
+    repo:type 'machine' .
 ```
 
 ## cmdb interface
