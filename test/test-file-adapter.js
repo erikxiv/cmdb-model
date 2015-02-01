@@ -4,7 +4,7 @@ var should = chai.Should();
 chai.use(chaiAsPromised);
 var rewire = require("rewire");
 
-var cmdb = require('../lib/cmdb-model');
+var cmdb = require('../lib/cmdb');
 var fa = rewire('../lib/file-adapter');
 
 var chokidarMock = {

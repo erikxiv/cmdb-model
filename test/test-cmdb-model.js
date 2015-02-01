@@ -3,7 +3,7 @@ var chaiAsPromised = require('chai-as-promised');
 var should = chai.Should();
 chai.use(chaiAsPromised);
 
-var cmdb = require('../lib/cmdb-model');
+var cmdb = require('../lib/cmdb');
 
 describe('cmdb-model', function() {
   ////
@@ -75,7 +75,7 @@ describe('cmdb-model', function() {
     });
 
     describe('.createCI', function() {
-      it.only('should create a CI', function() {
+      it('should create a CI', function() {
         repo.createCI({ id: '3', properties: {key1: 'value1', key2: 'valueQ'}}).should.be.fulfilled;
         repo.getCI('3').properties.key2.should.equal('valueQ');
       });
