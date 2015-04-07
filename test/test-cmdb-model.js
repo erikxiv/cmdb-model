@@ -10,17 +10,28 @@ describe('cmdb-model', function() {
   // Repository
   ////
   describe('repository', function() {
-    beforeEach(function() {
-      cmdb.createRepository('test');
+    beforeEach(function(done) {
+      // console.log('beforeEach');
+      cmdb.createRepository('test').then(function() {
+        // console.log('beforeEach done');
+        done();
+      });
     });
-    afterEach(function() {
-      cmdb.deleteAllRepositories();
+    afterEach(function(done) {
+      // console.log('afterEach');
+      cmdb.deleteAllRepositories().then(function() {
+        // console.log('afterEach done');        
+        done();
+      });
     });
 
     describe('.createRepository', function() {
-      it('should create a repository', function() {
-        cmdb.createRepository('test2').should.be.fulfilled;
-        cmdb.getRepository('test2').should.be.ok;
+      it('should create a repository', function(done) {
+        cmdb.createRepository('test2')
+        .then(function() {
+          cmdb.getRepository('test2').should.be.ok;
+          done();
+        })
       });
     });
 
@@ -30,8 +41,8 @@ describe('cmdb-model', function() {
       });
     });
 
-    describe('.deleteRepository', function(done) {
-      it('should delete a repository', function() {
+    describe('.deleteRepository', function() {
+      it('should delete a repository', function(done) {
         cmdb.deleteRepository('test').then(function() {
           should.not.exist(cmdb.getRepository('test'));
           done();
@@ -40,10 +51,13 @@ describe('cmdb-model', function() {
     });
 
     describe('.deleteAllRepositories', function() {
-      it('should delete all repositories', function() {
-        cmdb.deleteAllRepositories().should.be.fulfilled;
-        should.not.exist(cmdb.getRepository('test'));
-        cmdb.searchRepositories().should.have.length(0);
+      it('should delete all repositories', function(done) {
+        cmdb.deleteAllRepositories()
+        .then(function() {
+          should.not.exist(cmdb.getRepository('test'));
+          cmdb.searchRepositories().should.have.length(0);
+          done();
+        });
       });
     });
 
@@ -54,6 +68,8 @@ describe('cmdb-model', function() {
     });
   });
 
+  var throwfn = function(err) { console.log('threw ' + err); throw Error(err); }
+
   ////
   // Configuration Item
   ////
@@ -61,25 +77,35 @@ describe('cmdb-model', function() {
     var repo = null;
 
     beforeEach(function(done) {
+      // console.log('ci beforeEach');
       cmdb.createRepository('test').then(function(r) {
         repo = r;
         return repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
-      })
+      }, throwfn)
       .then(function(ci) {
         return repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
-      })
+      }, throwfn)
       .then(function(ci) {
+        // console.log('ci beforeEach done');
+        done();
+      }, throwfn);
+    });
+    afterEach(function(done) {
+      // console.log('ci afterEach');
+      cmdb.deleteAllRepositories()
+      .then(function() {
+        // console.log('ci afterEach done');
         done();
       });
     });
-    afterEach(function() {
-      cmdb.deleteAllRepositories();
-    });
 
     describe('.createCI', function() {
-      it('should create a CI', function() {
-        repo.createCI({ id: '3', properties: {key1: 'value1', key2: 'valueQ'}}).should.be.fulfilled;
-        repo.getCI('3').properties.key2.should.equal('valueQ');
+      it('should create a CI', function(done) {
+        repo.createCI({ id: '3', properties: {key1: 'value1', key2: 'valueQ'}})
+        .then(function() {
+          repo.getCI('3').properties.key2.should.equal('valueQ');
+          done();
+        })
       });
     });
 
@@ -118,15 +144,26 @@ describe('cmdb-model', function() {
     var repo = null;
 
     beforeEach(function(done) {
+      // console.log('change beforeEach');
       cmdb.createRepository('test').then(function(r) {
         repo = r;
-        repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
-        repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
+        return repo.createCI({ id: '1', properties: {key1: 'value1', key2: 'value2'}});
+      }, throwfn)
+      .then(function(ci) {
+        return repo.createCI({ id: '2', properties: {key1: 'value1', key2: 'valueB'}});
+      }, throwfn)
+      .then(function(ci) {
+        // console.log('change beforeEach done');
         done();
-      });
+      }, throwfn);
     });
-    afterEach(function() {
-      cmdb.deleteAllRepositories();
+    afterEach(function(done) {
+      // console.log('change afterEach');
+      cmdb.deleteAllRepositories()
+      .then(function() {
+        // console.log('change afterEach done');
+        done();
+      }, done);
     });
 
     describe('.createChange', function() {
@@ -137,9 +174,7 @@ describe('cmdb-model', function() {
           repo.getCI('1').properties.key2.should.equal('other');
           repo.getCI('1').properties.key1.should.equal('value1');
           done();
-        }, function(err) {
-          done(Error(err));
-        });
+        }, done);
       });
     });
 
